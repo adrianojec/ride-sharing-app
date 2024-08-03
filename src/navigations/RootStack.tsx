@@ -1,5 +1,8 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  StackNavigationOptions,
+} from "@react-navigation/stack";
 import HomeScreen from "../screens/Home/HomeScreen";
 
 export type RootStackParamList = {
@@ -9,9 +12,11 @@ export type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const RootStack: React.FC = () => {
+  const hideHeader: StackNavigationOptions = { headerShown: false };
+
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen}></Stack.Screen>
+    <Stack.Navigator screenOptions={hideHeader}>
+      <Stack.Screen name="Home" component={HomeScreen} />
     </Stack.Navigator>
   );
 };
