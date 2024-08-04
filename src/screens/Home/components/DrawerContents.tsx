@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { user } from "../../../data/mockData";
+import { currentDriver } from "../../../data/mockData";
 import Spacer from "../../../components/Spacer";
 import HorizontalDivider from "../../../components/Divider/HorizontalDivider";
 
@@ -10,9 +10,9 @@ const DrawerContents: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View>
-          <Image source={user.image} style={styles.userImage} />
+          <Image source={currentDriver.image} style={styles.userImage} />
           <Spacer h={24} />
-          <Text style={styles.userName}>{user.name}</Text>
+          <Text style={styles.userName}>{currentDriver.name}</Text>
           <Spacer h={8} />
           <HorizontalDivider thickness={1} color="lightgrey" />
           <Spacer h={40} />

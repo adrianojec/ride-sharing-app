@@ -4,6 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import RootStack from "./src/navigations/RootStack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Font from "expo-font";
+import { Provider } from "react-redux";
+import { store } from "./src/store/store";
 
 export default function App(): React.ReactNode {
   const loadFonts = async () => {
@@ -23,9 +25,11 @@ export default function App(): React.ReactNode {
     <>
       <StatusBar style="dark" animated />
       <NavigationContainer>
-        <SafeAreaProvider>
-          <RootStack />
-        </SafeAreaProvider>
+        <Provider store={store}>
+          <SafeAreaProvider>
+            <RootStack />
+          </SafeAreaProvider>
+        </Provider>
       </NavigationContainer>
     </>
   );

@@ -3,8 +3,8 @@ import { StyleSheet, View } from "react-native";
 import IconButton from "../../components/Buttons/IconButton";
 import { Drawer } from "react-native-drawer-layout";
 import DrawerContents from "./components/DrawerContents";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Map from "./components/Map";
 
 const HomeScreen: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,16 +23,7 @@ const HomeScreen: React.FC = () => {
     >
       <View>
         <View style={styles.mapContainer}>
-          <MapView
-            style={styles.map}
-            provider={PROVIDER_GOOGLE}
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-          />
+          <Map />
         </View>
         <IconButton
           icon="menu"
