@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import IconButton from "../../components/Buttons/IconButton";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Drawer } from "react-native-drawer-layout";
 import DrawerContents from "./components/DrawerContents";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const HomeScreen: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { top } = useSafeAreaInsets();
 
   const handleOpenDrawer = () => setIsOpen(true);
   const handleCloseDrawer = () => setIsOpen(false);
@@ -18,23 +21,39 @@ const HomeScreen: React.FC = () => {
       onClose={handleCloseDrawer}
       renderDrawerContent={() => <DrawerContents />}
     >
-      <SafeAreaView>
-        <View>
-          <IconButton
-            icon="menu"
-            onPress={handleOpenDrawer}
-            style={styles.iconButton}
+      <View>
+        <View style={styles.mapContainer}>
+          <MapView
+            style={styles.map}
+            provider={PROVIDER_GOOGLE}
+            initialRegion={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
           />
         </View>
-      </SafeAreaView>
+        <IconButton
+          icon="menu"
+          onPress={handleOpenDrawer}
+          style={[styles.iconButton, { top }]}
+        />
+      </View>
     </Drawer>
   );
 };
 
 const styles = StyleSheet.create({
+  mapContainer: {
+    height: "100%",
+  },
+  map: {
+    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+  },
   iconButton: {
     position: "absolute",
-    top: 0,
     left: 16,
   },
 });
