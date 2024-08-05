@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ride } from "../../../store/ride/types";
 import { setSelectedRide } from "../../../store/ride/rideSlice";
 import { useFitMarkersToMapView } from "../../../hooks/useFitMarkersToMapView";
+import { RideStatus } from "../../../constants/enums";
 
 const Map: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -16,6 +17,10 @@ const Map: React.FC = () => {
   const dispatch = useAppDispatch();
   const { mapRef } = useFitMarkersToMapView(
     rides.map((ride) => ride.pickupLocation)
+  );
+
+  const availableRides = rides.filter(
+    (ride) => ride.status !== RideStatus.DECLINED
   );
 
   const handleSelectRideAndGoToRideDetails = (ride: Ride) => {
@@ -31,7 +36,7 @@ const Map: React.FC = () => {
       showsUserLocation
       showsMyLocationButton
     >
-      {rides.map((ride) => {
+      {availableRides.map((ride) => {
         const coordinate = {
           latitude: ride.pickupLocation.latitude,
           longitude: ride.pickupLocation.longitude,

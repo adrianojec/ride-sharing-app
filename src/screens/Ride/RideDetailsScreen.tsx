@@ -4,16 +4,24 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import Spacer from "../../components/Spacer";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useFitMarkersToMapView } from "../../hooks/useFitMarkersToMapView";
-import { setSelectedRide } from "../../store/ride/rideSlice";
+import {
+  clearSelectedRide,
+  declineRideRequest,
+  setSelectedRide,
+  undoDeclinedRideRequest,
+} from "../../store/ride/rideSlice";
 import { format } from "date-fns";
 import Timeline from "react-native-timeline-flatlist";
 import HorizontalDivider from "../../components/Divider/HorizontalDivider";
 import UserSection from "./components/UserSection";
 import Button from "../../components/Buttons/Button";
+import Snackbar from "react-native-snackbar";
+import { useNavigation } from "@react-navigation/native";
 
 const RideDetailsScreen: React.FC = () => {
   const { selectedRide } = useAppSelector((state) => state.rides);
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
 
   const pickupLocation = {
     latitude: selectedRide?.pickupLocation.latitude ?? 0,
@@ -43,11 +51,27 @@ const RideDetailsScreen: React.FC = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(setSelectedRide(null));
+      dispatch(clearSelectedRide());
     };
   }, []);
 
   const { mapRef } = useFitMarkersToMapView([pickupLocation, destination]);
+
+  const handleDeclineRide = (id: string) => {
+    dispatch(declineRideRequest());
+    Snackbar.show({
+      text: "Request declined.",
+      duration: Snackbar.LENGTH_SHORT,
+      action: {
+        text: "UNDO",
+        textColor: "green",
+        onPress: () => dispatch(undoDeclinedRideRequest(id)),
+      },
+    });
+    navigation.goBack();
+  };
+
+  const handleAcceptRide = () => {};
 
   return (
     <View style={styles.container}>
@@ -79,9 +103,13 @@ const RideDetailsScreen: React.FC = () => {
           <UserSection />
         </View>
         <View style={styles.footerButtonsContainer}>
-          <Button text="Decline" color="red" onPress={() => {}} />
+          <Button
+            text="Decline"
+            color="red"
+            onPress={() => handleDeclineRide(selectedRide?.id ?? "")}
+          />
           <Spacer w={16} />
-          <Button text="Accept" color="limegreen" onPress={() => {}} />
+          <Button text="Accept" color="limegreen" onPress={handleAcceptRide} />
         </View>
       </View>
     </View>
