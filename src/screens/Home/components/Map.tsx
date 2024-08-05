@@ -1,8 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { StyleSheet } from "react-native";
-import { initialMapRegion } from "../../../data/mockData";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../navigation/RootStack";
 import { useNavigation } from "@react-navigation/native";

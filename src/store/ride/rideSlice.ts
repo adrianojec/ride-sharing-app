@@ -21,6 +21,7 @@ export const rideSlice = createSlice({
       state.selectedRide = action.payload;
     },
     clearSelectedRide: (state) => {
+      if (state.selectedRide?.status !== RideStatus.PENDING) return;
       state.selectedRide = null;
     },
     declineRideRequest: (state) => {
@@ -30,6 +31,7 @@ export const rideSlice = createSlice({
         ...state.selectedRide,
         status: RideStatus.DECLINED,
       };
+
       state.selectedRide = selectedRide;
 
       const selectedRideIndex = state.rides.findIndex(
@@ -58,6 +60,24 @@ export const rideSlice = createSlice({
 
       state.rides = rides;
     },
+    acceptRideRequest: (state) => {
+      if (state.selectedRide === null) return;
+
+      const selectedRide = {
+        ...state.selectedRide,
+        status: RideStatus.ACCEPTED,
+      };
+
+      state.selectedRide = selectedRide;
+
+      const selectedRideIndex = state.rides.findIndex(
+        (ride) => ride.id === selectedRide.id
+      );
+
+      if (selectedRideIndex === -1) return;
+
+      state.rides[selectedRideIndex] = selectedRide;
+    },
   },
 });
 
@@ -66,6 +86,7 @@ export const {
   clearSelectedRide,
   declineRideRequest,
   undoDeclinedRideRequest,
+  acceptRideRequest,
 } = rideSlice.actions;
 
 export default rideSlice.reducer;

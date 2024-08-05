@@ -5,9 +5,9 @@ import Spacer from "../../components/Spacer";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useFitMarkersToMapView } from "../../hooks/useFitMarkersToMapView";
 import {
+  acceptRideRequest,
   clearSelectedRide,
   declineRideRequest,
-  setSelectedRide,
   undoDeclinedRideRequest,
 } from "../../store/ride/rideSlice";
 import { format } from "date-fns";
@@ -49,13 +49,13 @@ const RideDetailsScreen: React.FC = () => {
     },
   ];
 
+  const { mapRef } = useFitMarkersToMapView([pickupLocation, destination]);
+
   useEffect(() => {
     return () => {
       dispatch(clearSelectedRide());
     };
   }, []);
-
-  const { mapRef } = useFitMarkersToMapView([pickupLocation, destination]);
 
   const handleDeclineRide = (id: string) => {
     dispatch(declineRideRequest());
@@ -71,7 +71,10 @@ const RideDetailsScreen: React.FC = () => {
     navigation.goBack();
   };
 
-  const handleAcceptRide = () => {};
+  const handleAcceptRide = () => {
+    dispatch(acceptRideRequest());
+    navigation.goBack();
+  };
 
   return (
     <View style={styles.container}>
