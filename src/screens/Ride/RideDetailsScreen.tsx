@@ -93,7 +93,7 @@ const RideDetailsScreen: React.FC = () => {
           >
             {/* TODO: Add polylines for directions */}
             <Marker coordinate={pickupLocation} />
-            <Marker coordinate={destination} />
+            <Marker pinColor="green" coordinate={destination} />
           </MapView>
           <Spacer h={32} />
           <Text>{selectedRide && pickUpDate}</Text>
