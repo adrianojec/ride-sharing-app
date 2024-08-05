@@ -52,6 +52,7 @@ const Map: React.FC = () => {
     isSelectedRideAccepted && (
       <>
         <Marker
+          pinColor="green"
           coordinate={coordinateFromAddress(selectedRide?.pickupLocation)}
         />
         <Marker coordinate={coordinateFromAddress(selectedRide?.destination)} />
