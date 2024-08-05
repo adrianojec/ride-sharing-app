@@ -1,6 +1,6 @@
 import { RideStatus } from "../../constants/enums";
 
-type Address = {
+export type Address = {
   address: string;
   latitude: number;
   longitude: number;

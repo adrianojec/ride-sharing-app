@@ -9,23 +9,54 @@ import { Ride } from "../../../store/ride/types";
 import { setSelectedRide } from "../../../store/ride/rideSlice";
 import { useFitMarkersToMapView } from "../../../hooks/useFitMarkersToMapView";
 import { RideStatus } from "../../../constants/enums";
+import { LatLng } from "react-native-maps";
+import { coordinateFromAddress } from "../../../utils/coordinate";
 
 const Map: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const { rides } = useAppSelector((state) => state.rides);
+  const { rides, selectedRide } = useAppSelector((state) => state.rides);
   const dispatch = useAppDispatch();
-  const { mapRef } = useFitMarkersToMapView(
-    rides.map((ride) => ride.pickupLocation)
-  );
 
+  const availableRidesCoordinates: LatLng[] = rides.map((ride) =>
+    coordinateFromAddress(ride.pickupLocation)
+  );
+  const acceptedRideCoordinates: LatLng[] = [
+    coordinateFromAddress(selectedRide?.pickupLocation),
+    coordinateFromAddress(selectedRide?.destination),
+  ];
   const availableRides = rides.filter(
     (ride) => ride.status !== RideStatus.DECLINED
+  );
+  const isSelectedRideAccepted =
+    selectedRide && selectedRide.status === RideStatus.ACCEPTED;
+
+  const { mapRef } = useFitMarkersToMapView(
+    isSelectedRideAccepted ? acceptedRideCoordinates : availableRidesCoordinates
   );
 
   const handleSelectRideAndGoToRideDetails = (ride: Ride) => {
     dispatch(setSelectedRide(ride));
     navigation.navigate("RideDetails");
   };
+
+  const renderAvailableRide = () =>
+    availableRides.map((ride) => (
+      <Marker
+        key={ride.id}
+        coordinate={coordinateFromAddress(ride.pickupLocation)}
+        onSelect={() => handleSelectRideAndGoToRideDetails(ride)}
+      />
+    ));
+
+  const renderAcceptedRides = () =>
+    isSelectedRideAccepted && (
+      <>
+        <Marker
+          coordinate={coordinateFromAddress(selectedRide?.pickupLocation)}
+        />
+        <Marker coordinate={coordinateFromAddress(selectedRide?.destination)} />
+      </>
+    );
 
   return (
     <MapView
@@ -35,21 +66,7 @@ const Map: React.FC = () => {
       showsUserLocation
       showsMyLocationButton
     >
-      {availableRides.map((ride) => {
-        const coordinate = {
-          latitude: ride.pickupLocation.latitude,
-          longitude: ride.pickupLocation.longitude,
-        };
-
-        return (
-          <Marker
-            key={ride.id}
-            identifier={ride.id}
-            coordinate={coordinate}
-            onSelect={() => handleSelectRideAndGoToRideDetails(ride)}
-          />
-        );
-      })}
+      {isSelectedRideAccepted ? renderAcceptedRides() : renderAvailableRide()}
     </MapView>
   );
 };
