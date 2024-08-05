@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import RootStack from "./src/navigations/RootStack";
+import RootStack from "./src/navigation/RootStack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Font from "expo-font";
 import { Provider } from "react-redux";

@@ -10,7 +10,7 @@ const DrawerContents: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View>
-          <Image source={currentDriver.image} style={styles.userImage} />
+          <Image source={currentDriver.image} style={styles.driverImage} />
           <Spacer h={24} />
           <Text style={styles.userName}>{currentDriver.name}</Text>
           <Spacer h={8} />
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "stretch",
   },
-  userImage: {
+  driverImage: {
     borderRadius: 40,
     height: 80,
     width: 80,

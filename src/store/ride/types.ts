@@ -1,13 +1,18 @@
-import { LatLng } from "react-native-maps";
 import { RideStatus } from "../../constants/enums";
+
+type Address = {
+  address: string;
+  latitude: number;
+  longitude: number;
+};
 
 export type Ride = {
   id: string;
   userId: string;
   driverId: string | null;
-  pickupLocation: LatLng;
-  destination: LatLng;
+  pickupLocation: Address;
+  destination: Address;
   status: RideStatus;
-  pickupTime: Date;
-  timestamp: Date;
+  pickupTime: string;
+  timestamp: string;
 };

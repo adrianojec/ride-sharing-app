@@ -21,7 +21,7 @@ const HomeScreen: React.FC = () => {
       onClose={handleCloseDrawer}
       renderDrawerContent={() => <DrawerContents />}
     >
-      <View>
+      <>
         <View style={styles.mapContainer}>
           <Map />
         </View>
@@ -30,7 +30,7 @@ const HomeScreen: React.FC = () => {
           onPress={handleOpenDrawer}
           style={[styles.iconButton, { top }]}
         />
-      </View>
+      </>
     </Drawer>
   );
 };
